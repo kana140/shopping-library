@@ -1,4 +1,6 @@
 import React from "react";
+import ".//App.css";
+import { Product } from "./components/Product.js";
 
 class App extends React.Component {
   state = {
@@ -12,7 +14,11 @@ class App extends React.Component {
   }
 
   render() {
-    return <h1>Hello {this.state.name}!</h1>;
+    return (
+      <div className="main">
+        <h1>Hello {this.state.name}!</h1>
+      </div>
+    );
   }
 }
 
