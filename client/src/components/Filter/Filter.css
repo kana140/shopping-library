@@ -1,0 +1,16 @@
+.filter {
+  background-color: white;
+  border-radius: 100px;
+  border-width: 2px;
+  border-color: #c0a5a5;
+  border-style: solid;
+  width: 10%;
+}
+
+.filter:hover {
+  background-color: #f2c9c9;
+}
+
+.filter.selected {
+  background-color: #f2c9c9;
+}

@@ -1,6 +1,10 @@
 import React from "react";
+import { Container, Typography } from "@mui/material";
+import { Header } from "./components/Header/Header";
+import { MainContent } from "./components/MainContent/MainContent";
+import { Footer } from "./components/Footer/Footer";
+
 import ".//App.css";
-import { Product } from "./components/Product.js";
 
 class App extends React.Component {
   state = {
@@ -15,9 +19,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="main">
-        <h1>Hello {this.state.name}!</h1>
-      </div>
+      <>
+        <Header />
+        <MainContent />
+        <Footer />
+      </>
+      /* <h1>Hello {this.state.name}!</h1> */
     );
   }
 }
