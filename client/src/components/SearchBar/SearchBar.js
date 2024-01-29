@@ -1,7 +1,22 @@
 import "./SearchBar.css";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, TextField } from "@mui/material";
 import { useState } from "react";
 
-export const SearchBar = ({}) => {
-  return <Box className="search-bar">search bar</Box>;
+export const SearchBar = ({ onClick }) => {
+  return (
+    <Box
+      className="search-bar"
+      onClick={() => {
+        onClick();
+      }}
+    >
+      <TextField
+        className="text-area"
+        placeholder="little black dress..."
+        sx={{
+          "& fieldset": { border: "none" },
+        }}
+      />
+    </Box>
+  );
 };

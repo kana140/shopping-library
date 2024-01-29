@@ -1,21 +1,50 @@
 import "./MainContent.css";
-import { Typography, Container } from "@mui/material";
+import {
+  Typography,
+  Container,
+  textField,
+  TextField,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
 import { useState } from "react";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { Filter } from "../Filter/Filter";
+import { Product } from "../Product/Product";
+import axios from "axios";
 
 export const MainContent = ({}) => {
   const [storeFilters, setStoreFilters] = useState(["H&M"]);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const filterList = [];
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [products, setProducts] = useState([]);
+  const [alert, setAlert] = useState(false);
+  // const filter = [];
 
-  function changeFilterList(filterName, index) {
-    if (!selectedFilters.includes(filterName)) {
-      setSelectedFilters([...selectedFilters, filterName]);
-    } else {
-      setSelectedFilters(
-        selectedFilters.filter((filter) => filter !== filterName)
+  // function changeFilter(filterName) {
+  //   console.log(selectedFilter);
+  //   if (!(selectedFilter == filterName)) {
+  //     setSelectedFilter(filterName);
+  //     m;
+  //   } else {
+  //     setSelectedFilter("");
+  //   }
+  //   console.log(selectedFilter);
+  // }
+
+  async function getProducts(searchInput, label) {
+    console.log("retrieving products");
+    const requestBody = { input: searchInput, label: selectedFilter };
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/search-results",
+        requestBody
       );
+      // Handle the response as needed
+      console.log("Products retrieved:", response.data);
+      setProducts(response.data);
+    } catch (error) {
+      // Handle errors if the request fails
+      console.error("Error retrieving products:", error.message);
     }
   }
 
@@ -27,15 +56,38 @@ export const MainContent = ({}) => {
         {storeFilters.map((storeFilter) => (
           <Filter
             filterName={storeFilter}
-            index={storeFilters.indexOf(storeFilter)}
-            onClick={() =>
-              changeFilterList(storeFilter, storeFilters.indexOf(storeFilter))
-            }
-            isSelected={selectedFilters.includes(storeFilter)}
+            onClick={() => {
+              if (selectedFilter != storeFilter) {
+                setSelectedFilter(storeFilter);
+              } else {
+                setSelectedFilter("");
+              }
+              console.log(selectedFilter);
+            }}
+            isSelected={selectedFilter == storeFilter}
           />
         ))}
       </Container>
-      <SearchBar />
+      <Alert severity="error" sx={{ display: alert ? "block" : "none" }}>
+        <AlertTitle>Select a filter to proceed with the search</AlertTitle>
+      </Alert>
+      <SearchBar
+        onClick={() => {
+          console.log("clicked");
+          if (selectedFilter != "") {
+            getProducts("bike%20shorts", selectedFilter);
+          } else {
+            setAlert(true);
+            console.log("set alert");
+          }
+        }}
+      />
+      {/* search results - might put in separate component */}
+      <Container className="search-results">
+        {products.map((product) => (
+          <Product />
+        ))}
+      </Container>
     </Container>
   );
 };
