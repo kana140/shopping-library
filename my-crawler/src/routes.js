@@ -43,7 +43,7 @@ router.addHandler("H&M", async ({ request, page, enqueueLinks, log }) => {
       scrapedData.push({
         title: $product.querySelector(".item-heading a").innerText,
         href: $product.querySelector(".item-heading a").href,
-        img: $product.querySelector(".image-container img").href,
+        img: $product.querySelector(".image-container img").getAttribute("src"),
         price: $product.querySelector(".item-price span").innerText,
       });
     });
@@ -66,6 +66,55 @@ router.addHandler("H&M", async ({ request, page, enqueueLinks, log }) => {
 
   if (infos.processedRequests.length === 0)
     log.info(`${request.url} is the last page!`);
+});
+
+router.addHandler("UNIQLO", async ({ request, page, enqueueLinks, log }) => {
+  log.info(`Processing ${request.url}...`);
+
+  // Grab the page's title and log it to the console
+  const title = await page.title();
+  console.log(title);
+
+  await page.waitForSelector("a .fr-product-card");
+  // A function to be evaluated by Playwright within the browser context.
+  const data = await page.$$eval("a.fr-product-card", ($products) => {
+    //   const scrapedData: { title: string, rank: string, href: string }[] = [];
+    const scrapedData = [];
+    console.log("blob");
+    // const currentProductsLength = $products.length;
+    // console.log(currentProductsLength);
+    $products.forEach(($product) => {
+      console.log(
+        $product.querySelector(".description.fr-no-uppercase h2").innerText
+      );
+      console.log("yay");
+      // scrapedData.push({
+      //   title: $product.querySelector(".description fr-no-uppercase p")
+      //     .innerText,
+      //   href: $product.querySelector(". a").href,
+      //   img: $product.querySelector(".thumb-image img").getAttribute("src"),
+      //   price: $product.querySelector(".price fr-no-uppercase span")
+      //     .innerText,
+      // });
+    });
+
+    return scrapedData;
+  });
+
+  // Store the results to the default dataset.
+  await Dataset.pushData(data);
+
+  // Wait for the "Load More" button to appear before attempting to enqueue links
+  // await page.waitForSelector("button.js-load-more");
+
+  // const infos = await playwrightUtils.enqueueLinksByClickingElements({
+  //   page,
+  //   requestQueue: crawler.requestQueue,
+  //   selector: "button.js-load-more",
+  // });
+
+  // if (infos.processedRequests.length === 0)
+  //   log.info(`${request.url} is the last page!`);
 });
 
 // This function is called if the page processing failed more than maxRequestRetries+1 times.

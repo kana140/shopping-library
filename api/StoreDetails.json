@@ -1,0 +1,13 @@
+[
+  {
+    "name": "H&M",
+    "locations": "us",
+    "link": "https://www2.hm.com/en_us/search-results.html?q="
+  },
+  {
+    "name": "UNIQLO",
+    "locations": "us",
+    "link": "https://www.uniqlo.com/us/en/search?q=",
+    "extra": "&path=22210%2C%2C%2C"
+  }
+]

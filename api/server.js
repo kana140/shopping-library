@@ -78,15 +78,21 @@ import("../my-crawler/src/main.js")
       console.log("getting search results");
       const requestBody = req.body;
       console.log(requestBody.input);
+      const urlPrefix = await getURLPrefix(requestBody.label);
+      console.log(urlPrefix);
 
       try {
         // Use axios to fetch HTML content
 
         // Run Crawlee from the other project
-        await runCrawlee(requestBody.input);
+        await runCrawlee(requestBody.input, requestBody.label, urlPrefix);
+
+        console.log("getting data");
+        const data = await getData();
+        console.log("data", data);
 
         // Handle the scraped data
-        res.json({ success: true });
+        res.json({ success: true, data });
       } catch (error) {
         // Handle web scraping error
         console.log(error);
@@ -95,9 +101,36 @@ import("../my-crawler/src/main.js")
     });
 
     app.listen(PORT, () => {
-      console.log("app listening on port 3000");
+      console.log("app listening on port ", PORT);
     });
   })
   .catch((err) => {
     console.error("Error loading module: ", err);
   });
+
+async function getData() {
+  const fs = require("fs").promises;
+  const join = require("path").join;
+  console.log("entered getData function");
+  const publicDir = join(__dirname, "/storage/key_value_stores/default");
+  console.log(publicDir);
+  const productsFile = join(publicDir, "results.json");
+  const productData = await fs.readFile(productsFile, "utf-8");
+  const products = JSON.parse(productData);
+  return products;
+}
+
+async function getURLPrefix(store) {
+  const fs = require("fs").promises;
+  const join = require("path").join;
+  console.log("creating url prefix for", store);
+  const storesFile = join(__dirname, "/StoreDetails.json");
+  console.log(storesFile);
+  const storesData = await fs.readFile(storesFile, "utf-8");
+  const storesJSON = JSON.parse(storesData);
+  const storeElement = storesJSON.find((element) => {
+    if (element.name === store) return element;
+  });
+  //will need to add link where it chooses the correct location based on user input
+  return storeElement.link;
+}

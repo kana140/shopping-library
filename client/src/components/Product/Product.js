@@ -11,28 +11,29 @@ import {
 // import { Link, useNavigate } from "react-router-dom";
 // import { useState } from "react";
 
-export const Product = ({ idkyet }) => {
+export const Product = ({ product }) => {
   return (
-    <Card sx={{ borderRadius: "20px", bgcolor: "#F4F4F4" }}>
-      <CardContent>
-        <Typography gutterBottom variant="h4" component="div" marginTop={2}>
-          product name
-        </Typography>
-      </CardContent>
-
-      <CardActions style={{ justifyContent: "center" }}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          style={{
-            borderRadius: "10px",
-            textTransform: "none",
-            backgroundColor: "white",
-          }}
-        >
-          button
-        </Button>
-      </CardActions>
-    </Card>
+    <a
+      href={product.href}
+      target="_blank"
+      rel="noreferrer"
+      style={{ textDecoration: "none" }}
+    >
+      <Card sx={{ bgcolor: "#F4F4F4" }}>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={product.img}
+          title="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom marginTop={2}>
+            {product.title}
+          </Typography>
+          <Typography gutterBottom marginTop={2}>
+            {product.price}
+          </Typography>
+        </CardContent>
+      </Card>
+    </a>
   );
 };
