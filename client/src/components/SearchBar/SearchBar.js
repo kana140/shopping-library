@@ -14,8 +14,7 @@ import {
 import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SearchIcon from "@mui/icons-material/Search";
-import { STORE_FILTERS } from "../../constants";
-// import { Filter } from "../Filter/Filter";
+import { STORE_FILTERS } from "../../constants.js";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -36,7 +35,6 @@ export const SearchBar = ({
   setSelectedFilter,
   setSearchQuery,
 }) => {
-  // const [selectedFilter, setSelectedFilter] = useState("H&M");
   const handleChange = (event) => {
     const {
       target: { value },
@@ -45,50 +43,30 @@ export const SearchBar = ({
     console.log(selectedFilter);
   };
   return (
-    <Box
-      className="search-bar"
-      display="flex"
-      alignItems="center"
-      // onClick={() => {
-      //   onClick();
-      // }}
-    >
-      <Box className="filter-box" flex="1" mr={1}>
-        <FormControl sx={{ m: 1, width: 200, margin: 0 }}>
-          {/* <InputLabel id="demo-multiple-name-label">Name</InputLabel> */}
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={selectedFilter}
-            onChange={handleChange}
-            MenuProps={MenuProps}
-            IconComponent={() => (
-              <IconButton>
-                <SvgIcon component={FavoriteIcon} className="heart-arrow" />
-              </IconButton>
-            )}
-            sx={{
-              borderRadius: "100px 0 0 100px",
-              borderColor: "#c0a5a5",
-              borderWidth: "2px",
-              borderStyle: "solid",
-              boxShadow: "none",
-              ".MuiOutlinedInput-notchedOutline": { border: 0 },
-              backgroundColor: "#f2c9c9",
-            }} //put this in a theme componentn thing
-          >
-            {STORE_FILTERS.map((storeFilter) => (
-              <MenuItem
-                key={storeFilter}
-                value={storeFilter}
-                // style={getStyles(name, personName, theme)}
-              >
-                <Typography textAlign={"center"}> {storeFilter} </Typography>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+    <Box className="search-bar" display="flex" alignItems="center">
+      <FormControl sx={{ m: 1, width: 200, margin: 0 }}>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={selectedFilter}
+          onChange={handleChange}
+          MenuProps={MenuProps}
+          sx={{
+            borderRadius: "100px 0 0 100px",
+            borderColor: "#c0a5a5",
+            borderWidth: "2px",
+            boxShadow: "none",
+            ".MuiOutlinedInput-notchedOutline": { border: 0 },
+            backgroundColor: "#f2c9c9",
+          }} //put this in a theme componentn thing
+        >
+          {STORE_FILTERS.map((storeFilter) => (
+            <MenuItem key={storeFilter} value={storeFilter}>
+              <Typography textAlign={"center"}> {storeFilter} </Typography>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <Box flex="1" display="flex" alignItems="center">
         <TextField
           className="text-area"

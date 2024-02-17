@@ -1,2 +1,8 @@
 .loading-bar {
 }
+
+.search-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
