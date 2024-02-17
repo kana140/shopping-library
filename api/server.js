@@ -75,17 +75,26 @@ import("../my-crawler/src/main.js")
 
     // Endpoint to serve the content ??
     app.post("/search-results", async (req, res) => {
+      // if (requestBody.label === "STRADIVARIUS") {
+      //   handleStradivarusData(requestBody.input);
+      //   res.json({ success: true, data });
+      // }
       console.log("getting search results");
+
       const requestBody = req.body;
       console.log(requestBody.input);
       const urlPrefix = await getURLPrefix(requestBody.label);
       console.log(urlPrefix);
+      var link = urlPrefix[0] + requestBody.input;
+      if (urlPrefix[1] != undefined)
+        link = urlPrefix[0] + requestBody.input + urlPrefix[1];
+      console.log(link);
 
       try {
         // Use axios to fetch HTML content
 
         // Run Crawlee from the other project
-        await runCrawlee(requestBody.input, requestBody.label, urlPrefix);
+        await runCrawlee(link, requestBody.label);
 
         console.log("getting data");
         const data = await getData();
@@ -131,6 +140,8 @@ async function getURLPrefix(store) {
   const storeElement = storesJSON.find((element) => {
     if (element.name === store) return element;
   });
+  if (typeof storeElement.extra === "undefined") return [storeElement.link];
+  return [storeElement.link, storeElement.extra];
+
   //will need to add link where it chooses the correct location based on user input
-  return storeElement.link;
 }

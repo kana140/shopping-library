@@ -9,34 +9,28 @@ import { router } from "./routes.js";
 
 const crawler = new PlaywrightCrawler({
   requestHandler: router,
+  // headless: false,
 });
 
-async function runCrawlee(searchInput, label, urlPrefix) {
-  await runCrawler(crawler, searchInput, label, urlPrefix);
+async function runCrawlee(link, label) {
+  await runCrawler(crawler, link, label);
   console.log("runcrawler function finished");
 }
 
 // Run the crawler and wait for it to finish.
-async function runCrawler(crawler, searchInput, label, urlPrefix) {
+async function runCrawler(crawler, link, label) {
   return new Promise(async (resolve, reject) => {
     log.info("Starting the crawl.");
-    log.info(searchInput);
-    log.info(`${urlPrefix}${searchInput}`);
+    log.info(link);
     await crawler.run([
       {
-        url: `${urlPrefix}${searchInput}`,
+        url: link,
         label: label,
       },
     ]);
 
-    //https://www.uniqlo.com/us/en/search?q=shorts&path=22210%2C%2C%2C (path = women)
-
-    // const dataset = await Dataset.open();
-
-    // await KeyValueStore.setValue("OUTPUT", (await dataset.getData()).items);
     await Dataset.exportToJSON("results");
     resolve();
-    console.log("exported to csv");
 
     console.log("Crawler finished.");
   });

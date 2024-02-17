@@ -2,12 +2,49 @@
   {
     "name": "H&M",
     "locations": "us",
-    "link": "https://www2.hm.com/en_us/search-results.html?q="
+    "link": "https://www2.hm.com/en_us/search-results/_jcr_content/search.display.json?q=",
+    "extra": "&department=ladies_all&sort=stock&image-size=small&image=stillLife&offset=40&page-size=999"
   },
   {
     "name": "UNIQLO",
     "locations": "us",
-    "link": "https://www.uniqlo.com/us/en/search?q=",
-    "extra": "&path=22210%2C%2C%2C"
+    "link": "https://www.uniqlo.com/us/api/commerce/v5/en/products?q=",
+    "extra": "skirt&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true"
+  },
+  {
+    "name": "ZARA",
+    "locations": "us",
+    "link": "https://www.zara.com/us/en/search?searchTerm=",
+    "extra": "&section=WOMAN"
+  },
+  {
+    "name": "PULLANDBEAR",
+    "locations": "us",
+    "link": "https://www.pullandbear.com/us/woman-n6417?q=Bike+shorts",
+    "extra": ""
+  },
+  {
+    "name": "BERSHKA",
+    "locations": "us",
+    "link": "https://www.bershka.com/us/q/",
+    "extra": ""
+  },
+  {
+    "name": "STRADIVARIUS",
+    "locations": "us",
+    "link": "https://api.empathy.co/search/v1/query/stradivarius/search?query=",
+    "extra": "&lang=en&store=54009627&catalogue=50331121&warehouse=102109001&scope=mobile"
+  },
+  {
+    "name": "MANGO",
+    "locations": "us",
+    "link": "https://shop.mango.com/us/search?kw=",
+    "extra": ""
+  },
+  {
+    "name": "ASOS",
+    "locations": "us",
+    "link": "https://www.asos.com/us/search/?q=",
+    "extra": ""
   }
 ]

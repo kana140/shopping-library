@@ -1,8 +1,58 @@
 [
   {
-    "name": "",
-    "image-selector": "",
-    "title-selector": "",
-    "price-selector": ""
+    "name": "H&M",
+    "productSelector": ".product-item",
+    "linkSelector": ".item-heading a",
+    "imageSelector": "img.item-image",
+    "titleSelector": ".item-heading a",
+    "priceSelector": ".item-price span"
+  },
+  {
+    "name": "UNIQLO",
+    "productSelector": ".fr-ec-layout .fr-ec-filter-layout-page-content .fr-ec-product-collection .fr-ec-product-tile-resize-wrapper .fr-ec-product-tile",
+    "linkSelector": "",
+    "imageSelector": ".fr-ec-image img",
+    "titleSelector": ".fr-ec-product-tile__end-product-name",
+    "priceSelector": ".fr-ec-price-text"
+  },
+  {
+    "name": "ZARA",
+    "productSelector": ".product-grid-product",
+    "linkSelector": ".product-link a",
+    "imageSelector": ".media img",
+    "titleSelector": ".product-grid-product-info__main-info a",
+    "priceSelector": ".money-amount__main"
+  },
+  {
+    "name": "BERHSKA",
+    "productSelector": ".search-product-card",
+    "linkSelector": "a",
+    "imageSelector": "img.image-item",
+    "titleSelector": ".product-text p",
+    "priceSelector": ".current-price-elem"
+  },
+  {
+    "name": "STRADIVARIUS",
+    "productSelector": ".colbenson-grid-content enter-animation size-4.product-grid-item item-generic-grid item-position-grid-4",
+    "linkSelector": "a",
+    "imageSelector": ".lazy-image-container img",
+    "titleSelector": ".title-product",
+    "priceSelector": ".grid-product-price span"
+  },
+  {
+    "name": "MANGO",
+    "productSelector": ".lZ7AB T85hV Ce_Y3",
+    "linkSelector": "a",
+    "imageSelector": ".Slideshow_slideshow__0ba54112 img",
+    "titleSelector": ".product-name sg-text-body-small y8pxS",
+    "priceSelector": ".PeSJ4 text-body-m"
+  },
+  {
+    "name": "ASOS",
+    "productSelector": ".productTile_IAw3u",
+    "linkSelector": ".productTile_IAw3u > a",
+    "imageSelector": ".lazy_JyBZv show_tbNyL",
+    "titleSelector": ".productDescription_sryaw",
+    "priceSelector": ".container_s8SSI > span > span"
   }
 ]
