@@ -9,7 +9,7 @@
     "name": "UNIQLO",
     "locations": "us",
     "link": "https://www.uniqlo.com/us/api/commerce/v5/en/products?q=",
-    "extra": "skirt&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true"
+    "extra": "&queryRelaxationFlag=true&offset=0&limit=36&httpFailure=true"
   },
   {
     "name": "ZARA",

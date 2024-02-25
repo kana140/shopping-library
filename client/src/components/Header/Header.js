@@ -7,7 +7,7 @@ export const Header = ({}) => {
     <Container className="heading">
       <Typography variant="h2" align="center">
         {" "}
-        Shopping Repository{" "}
+        One Tab Fits All{" "}
       </Typography>
     </Container>
   );

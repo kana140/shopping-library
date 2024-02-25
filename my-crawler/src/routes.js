@@ -106,32 +106,53 @@ router.addHandler(
 //     log.info(`Request ${request.url} failed too many times.`);
 //   },
 
-router.addHandler("UNIQLO", async ({ request, page, enqueueLinks, log }) => {
-  log.info(`Processing ${request.url}...`);
-  const title = await page.title();
-  console.log(title);
+router.addHandler(
+  "UNIQLO",
+  async ({ request, page, enqueueLinks, log, transformRequestFunction }) => {
+    log.info(`Processing ${request.url}...`);
+    const title = await page.title();
+    console.log(title);
 
-  const promise = page.goto(request.url);
-  var response = await promise;
+    let url = request.url;
+    const promise = page.goto(url);
+    var response = await promise;
+    let resp = await response.json();
 
-  let resp = await response.json();
-  const products = resp.result.items;
+    let total = resp.result.pagination.total;
+    let newOffset = resp.result.pagination.offset + 1;
+    console.log(newOffset);
+    let count = resp.result.pagination.count;
+    console.log(total, newOffset, count);
 
-  const scrapedData = [];
-  products.forEach((product) => {
-    console.log(
-      product.images.main[product.representative.color.displayCode].image
-    );
+    if (count < total) {
+      const products = resp.result.items;
 
-    scrapedData.push({
-      title: product.name,
-      href: `https://www.uniqlo.com/us/en/products/${product.productId}/00?colorDisplayCode=${product.representative.color.displayCode}&sizeDisplayCode=003`,
-      img: product.images.main[product.representative.color.displayCode].image,
-      price: product.prices.base.value,
-    });
-  }),
-    await Dataset.pushData(scrapedData);
-});
+      const scrapedData = [];
+      products.forEach((product) => {
+        scrapedData.push({
+          title: product.name,
+          href: `https://www.uniqlo.com/us/en/products/${product.productId}/00?colorDisplayCode=${product.representative.color.displayCode}&sizeDisplayCode=003`,
+          img: product.images.main[product.representative.color.displayCode]
+            .image,
+          price: product.prices.base.value,
+        });
+      }),
+        await Dataset.pushData(scrapedData);
+
+      await enqueueLinks({
+        transformRequestFunction: (request, newOffset) => {
+          log.info(newOffset);
+          request.payload.offset = newOffset;
+          // request.keepUrlFragment = true;
+          log.info(request, "is the new request");
+          return request;
+        },
+        requestQueue: crawler.requestQueue,
+        label: "UNIQLO",
+      });
+    }
+  }
+);
 
 //handler for ZARA
 router.addHandler("ZARA", async ({ request, page, enqueueLinks, log }) => {

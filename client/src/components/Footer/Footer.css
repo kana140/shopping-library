@@ -1,5 +1,6 @@
 .footer {
   bottom: 0;
   font-weight: 50;
-  position: fixed;
+  /* position: fixed; */
+  height: 100px !important;
 }

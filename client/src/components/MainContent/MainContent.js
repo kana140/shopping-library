@@ -48,8 +48,12 @@ export const MainContent = ({}) => {
 
   return (
     <Container>
-      <Typography align="center">All in one e-commerce repository,</Typography>
-      <Typography align="center">save time when online shopping</Typography>
+      <Typography align="center">
+        "Why waste time have multiple tabs open
+      </Typography>
+      <Typography align="center">
+        when one tab do trick?" - Kevin Malone, 2011
+      </Typography>
       <SearchBar
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -108,7 +112,7 @@ export const MainContent = ({}) => {
                       {" "}
                       No products found
                     </Typography>
-                    <img src="/../../../public/sadempty.svg"></img>
+                    <img src="/Users/keitelanana/Documents/GitHub/shopping-library/client/public/sadempty.svg"></img>
                   </Container>
                 )}
               </Grid>
