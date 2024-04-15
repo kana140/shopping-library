@@ -1,6 +1,7 @@
 import { createPlaywrightRouter, Dataset, playwrightUtils } from "crawlee";
 import { crawler } from "./main.js";
 import storeStructures from "./storeStructures.json" assert { type: "json" };
+// import { SearchBar } from "../../client/src/components/SearchBar/SearchBar.js";
 
 export const router = createPlaywrightRouter();
 
@@ -54,64 +55,11 @@ router.addHandler(
   }
 );
 
-//handler for uniqlo - non api handler
-// router.addHandler("UNIQLO", async ({ request, page, enqueueLinks, log }) => {
-//   log.info(`Processing ${request.url}...`);
-
-//   // Grab the page's title and log it to the console
-//   const title = await page.title();
-//   console.log(title);
-
-//   await page.waitForSelector(
-//     ".fr-ec-layout .fr-ec-filter-layout-page-content .fr-ec-product-collection .fr-ec-product-tile-resize-wrapper .fr-ec-product-tile"
-//   );
-//   //div.fr-ec-product-tile-resize-wrapper > a
-//   // A function to be evaluated by Playwright within the browser context.
-//   const data = await page.$$eval(
-//     ".fr-ec-layout .fr-ec-filter-layout-page-content .fr-ec-product-collection .fr-ec-product-tile-resize-wrapper .fr-ec-product-tile",
-//     ($products) => {
-//       const scrapedData = [];
-//       $products.forEach(($product) => {
-//         scrapedData.push({
-//           title: $product.querySelector(".fr-ec-product-tile__end-product-name")
-//             .innerText,
-//           href: $product.getAttribute("href"),
-//           img: $product.querySelector(".fr-ec-image img").getAttribute("src"),
-//           price: $product.querySelector(".fr-ec-price-text").innerText,
-//         });
-//       });
-
-//       return scrapedData;
-//     }
-//   );
-
-// Store the results to the default dataset.
-// await Dataset.pushData(data);
-
-// Wait for the "Load More" button to appear before attempting to enqueue links
-// await page.waitForSelector("button.js-load-more");
-
-// const infos = await playwrightUtils.enqueueLinksByClickingElements({
-//   page,
-//   requestQueue: crawler.requestQueue,
-//   selector: "button.js-load-more",
-// });
-
-// if (infos.processedRequests.length === 0)
-//   log.info(`${request.url} is the last page!`);
-// });
-
-// This function is called if the page processing failed more than maxRequestRetries+1 times.
-//   failedRequestHandler({ request, log }) {
-//     log.info(`Request ${request.url} failed too many times.`);
-//   },
-
 router.addHandler(
   "UNIQLO",
   async ({ request, page, enqueueLinks, log, transformRequestFunction }) => {
     log.info(`Processing ${request.url}...`);
-    const title = await page.title();
-    console.log(title);
+    console.log(request.userData.input);
 
     let url = request.url;
     const promise = page.goto(url);
@@ -119,12 +67,14 @@ router.addHandler(
     let resp = await response.json();
 
     let total = resp.result.pagination.total;
-    let newOffset = resp.result.pagination.offset + 1;
+    let offset = resp.result.pagination.offset;
+    console.log(offset);
+    let newOffset = offset + 36;
     console.log(newOffset);
-    let count = resp.result.pagination.count;
+    let count = resp.result.pagination.count + 36;
     console.log(total, newOffset, count);
 
-    if (count < total) {
+    if (offset < total) {
       const products = resp.result.items;
 
       const scrapedData = [];
@@ -139,22 +89,25 @@ router.addHandler(
       }),
         await Dataset.pushData(scrapedData);
 
+      console.log(request.userData.input);
+      const newLink =
+        "https://www.uniqlo.com/us/api/commerce/v5/en/products?q=" +
+        request.userData.input +
+        "&queryRelaxationFlag=true&offset=" +
+        newOffset +
+        "&limit=36&httpFailure=true";
+      console.log(newLink);
       await enqueueLinks({
-        transformRequestFunction: (request, newOffset) => {
-          log.info(newOffset);
-          request.payload.offset = newOffset;
-          // request.keepUrlFragment = true;
-          log.info(request, "is the new request");
-          return request;
-        },
+        urls: [newLink],
         requestQueue: crawler.requestQueue,
         label: "UNIQLO",
+        userData: { input: request.userData.input },
       });
     }
   }
 );
 
-//handler for ZARA
+// handler for ZARA
 router.addHandler("ZARA", async ({ request, page, enqueueLinks, log }) => {
   log.info(`Processing ${request.url}...`);
 
@@ -171,8 +124,12 @@ router.addHandler("ZARA", async ({ request, page, enqueueLinks, log }) => {
       scrapedData.push({
         title: $product.querySelector(".product-grid-product-info__main-info a")
           .innerText,
-        href: $product.querySelector(".product-link a").getAttribute("href"),
-        img: $product.querySelector(".media img").getAttribute("src"),
+        href: $product
+          .querySelector(".product-link product-grid-product__link link")
+          .getAttribute("href"),
+        img: $product
+          .querySelector(".media-image__image media__wrapper--media img")
+          .getAttribute("src"),
         price: $product.querySelector(".money-amount__main").innerText,
       });
     });
@@ -181,6 +138,56 @@ router.addHandler("ZARA", async ({ request, page, enqueueLinks, log }) => {
   });
   await Dataset.pushData(data);
 });
+
+// router.addHandler("ZARA", async ({ request, page, enqueueLinks, log }) => {
+//   log.info(`Processing ${request.url}...`);
+//   console.log(request.userData.input);
+
+//   let url = request.url;
+//   const promise = page.goto(url);
+//   var response = await promise;
+//   let resp = await response.json();
+
+//   let total = resp.totalResults;
+//   // let offset = resp.result.pagination.offset;
+//   // console.log(offset);
+//   // let newOffset = offset + 36;
+//   // console.log(newOffset);
+//   console.log(total);
+
+//   const products = resp.results;
+
+//   const scrapedData = [];
+//   products.forEach((product) => {
+//     scrapedData.push({
+//       title: product.content.name.toLowerCase(),
+//       href: `https://www.zara.com/us/en/box-pleat-mini-shirtdress-p03152313.html`,
+//       img: `https://static.zara.net/photos///${product.content.xmedia[0].path}/w/354/${product.content.xmedia[0].name}.jpg?ts=${product.content.xmedia[0].timestamp}`,
+//       price: product.content.price,
+//     });
+//   }),
+//     await Dataset.pushData(scrapedData);
+
+//   if (offset === undefined) offset = 72;
+//   else offset = offset + 36;
+//   const newLink =
+//     "https://www.zara.com/itxrest/1/search/store/11719/query?query=" +
+//     request.userData.input +
+//     "&locale=en_US&session=8bdc5a59-b9bd-4872-8704-cc4be5084307&deviceType=desktop&deviceOS=Android&deviceOSVersion=6.0&catalogue=24056&warehouse=15053&section=WOMAN&offset=" +
+//     offset +
+//     "&limit=36&scope=default&origin=default&filter=searchSection%3AWOMAN&cursor=AAAAJA&ajax=true";
+//   console.log(newLink);
+
+//   if (results.isLastPage) {
+//     const newLink = "";
+//     await enqueueLinks({
+//       urls: [newLink],
+//       requestQueue: crawler.requestQueue,
+//       label: "ZARA",
+//       userData: { input: request.userData.input, offset: offset },
+//     });
+//   }
+// });
 
 //handler for pull and bear
 router.addHandler(
@@ -202,7 +209,7 @@ router.addHandler(
           title: $product.querySelector(".product-name").innerText,
           href: $product.getAttribute("href"),
           img: $product.querySelector("#image img").getAttribute("src"),
-          price: $product.querySelector(".current-price").innerText,
+          price: $product.querySelector(".current-price span").innerText,
         });
       });
 

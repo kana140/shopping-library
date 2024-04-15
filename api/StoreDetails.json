@@ -14,13 +14,13 @@
   {
     "name": "ZARA",
     "locations": "us",
-    "link": "https://www.zara.com/us/en/search?searchTerm=",
-    "extra": "&section=WOMAN"
+    "link": "https://www.zara.com/itxrest/1/search/store/11719/query?query=",
+    "extra": "&locale=en_US&session=8bdc5a59-b9bd-4872-8704-cc4be5084307&deviceType=desktop&deviceOS=Android&deviceOSVersion=6.0&catalogue=24056&warehouse=15053&section=WOMAN&offset=36&limit=36&scope=default&origin=default&filter=searchSection%3AWOMAN&cursor=AAAAJA&ajax=true"
   },
   {
     "name": "PULLANDBEAR",
     "locations": "us",
-    "link": "https://www.pullandbear.com/us/woman-n6417?q=Bike+shorts",
+    "link": "https://www.pullandbear.com/us/woman-n6417?q=",
     "extra": ""
   },
   {

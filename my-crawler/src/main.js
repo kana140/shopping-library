@@ -12,13 +12,13 @@ const crawler = new PlaywrightCrawler({
   // headless: false,
 });
 
-async function runCrawlee(link, label) {
-  await runCrawler(crawler, link, label);
+async function runCrawlee(link, label, searchQuery) {
+  await runCrawler(crawler, link, label, searchQuery);
   console.log("runcrawler function finished");
 }
 
 // Run the crawler and wait for it to finish.
-async function runCrawler(crawler, link, label) {
+async function runCrawler(crawler, link, label, searchQuery) {
   return new Promise(async (resolve, reject) => {
     log.info("Starting the crawl.");
     log.info(link);
@@ -26,6 +26,7 @@ async function runCrawler(crawler, link, label) {
       {
         url: link,
         label: label,
+        userData: { input: searchQuery },
       },
     ]);
 

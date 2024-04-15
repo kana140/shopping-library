@@ -94,7 +94,7 @@ import("../my-crawler/src/main.js")
         // Use axios to fetch HTML content
 
         // Run Crawlee from the other project
-        await runCrawlee(link, requestBody.label);
+        await runCrawlee(link, requestBody.label, requestBody.input);
 
         console.log("getting data");
         const data = await getData();
