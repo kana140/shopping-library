@@ -4,3 +4,4 @@
 node_modules
 api/storage
 storage/datasets/default
+.env.local

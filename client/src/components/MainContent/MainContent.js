@@ -24,6 +24,7 @@ export const MainContent = ({}) => {
   const [productsLoaded, setProductsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   async function getProducts() {
     console.log("retrieving products");
@@ -32,7 +33,7 @@ export const MainContent = ({}) => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3001/search-results",
+        `${apiUrl}/search-results`,
         requestBody
       );
       // Handle the response as needed
