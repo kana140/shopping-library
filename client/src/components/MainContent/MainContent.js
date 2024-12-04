@@ -32,10 +32,7 @@ export const MainContent = ({}) => {
     console.log(searchQuery, selectedFilter);
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `${apiUrl}/search-results`,
-        requestBody
-      );
+      const response = await axios.post(`/search-results`, requestBody);
       // Handle the response as needed
       console.log("Products retrieved:", response.data.data);
       setProducts(response.data.data);
